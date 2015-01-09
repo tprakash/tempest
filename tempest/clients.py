@@ -89,6 +89,8 @@ from tempest.services.orchestration.json.orchestration_client import \
     OrchestrationClient
 from tempest.services.telemetry.json.telemetry_client import \
     TelemetryClientJSON
+from tempest.services.monitoring.json.monitoring_client import \
+    MonitoringClientJSON
 from tempest.services.volume.json.admin.volume_hosts_client import \
     VolumeHostsClientJSON
 from tempest.services.volume.json.admin.volume_quotas_client import \
@@ -153,6 +155,8 @@ class Manager(manager.Manager):
         if CONF.service_available.ceilometer:
             self.telemetry_client = TelemetryClientJSON(
                 self.auth_provider)
+        self.monitoring_client = MonitoringClientJSON(
+                    self.auth_provider)
         self.negative_client = negative_rest_client.NegativeRestClient(
             self.auth_provider, service)
 
