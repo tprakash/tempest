@@ -34,8 +34,8 @@ class MonitoringClientJSON(rest_client.RestClient):
         self.version = '2.0'
         self.uri_prefix = "v%s" % self.version
 
-    # def get_rest_client(self, auth_provider):
-    #     return rest_client.RestClient(auth_provider)
+    def get_rest_client(self, auth_provider):
+        return rest_client.RestClient(auth_provider)
 
     def deserialize(self, body):
         return json.loads(body.replace("\n", ""))
@@ -43,7 +43,7 @@ class MonitoringClientJSON(rest_client.RestClient):
     def serialize(self, body):
         return json.dumps(body)
 
-    # def post(self, uri, body):
+    # def post_resource(self, uri, body):
     #     body = self.serialize(body)
     #     resp, body = self.post(uri, body)
     #     body = self.deserialize(body)
@@ -82,11 +82,16 @@ class MonitoringClientJSON(rest_client.RestClient):
             uri_dict['period'] = period
         if uri_dict:
             uri += "?%s" % urllib.urlencode(uri_dict)
-        return self.get(uri)
+        resp, body = self.get(uri)
+        body = self.deserialize(body)
+        return resp, body
 
     def create_alarm_definition(self, **kwargs):
         uri = "/alarm-definitions/"
-        return self.post(uri, kwargs)
+        body = self.serialize(kwargs)
+        resp, body = self.post(uri, body)
+        body = self.deserialize(body)
+        return resp, body
 
     def list_alarm_definitions(self, query=None):
         uri = '/alarm-definitions'
@@ -98,11 +103,17 @@ class MonitoringClientJSON(rest_client.RestClient):
 
     def update_alarm_definition(self, alarm_def_id, **kwargs):
         uri = "/alarm-definitions/%s" % alarm_def_id
-        return self.put(uri, kwargs)
+        body = self.serialize(kwargs)
+        resp, body = self.put(uri, body)
+        body = self.deserialize(body)
+        return resp, body
 
     def patch_alarm_definition(self, alarm_def_id, **kwargs):
         uri = "/alarm-definitions/%s" % alarm_def_id
-        return self.patch(uri, kwargs)
+        body = self.serialize(kwargs)
+        resp, body = self.patch(uri, body)
+        body = self.deserialize(body)
+        return body
 
     def delete_alarm_definition(self, alarm_def_id):
         uri = "/alarm-definitions/%s" % alarm_def_id
@@ -118,11 +129,17 @@ class MonitoringClientJSON(rest_client.RestClient):
 
     def update_alarm(self, alarm_id, **kwargs):
         uri = "/alarms/%s" % alarm_id
-        return self.put(uri, kwargs)
+        body = self.serialize(kwargs)
+        resp, body = self.put(uri, body)
+        body = self.deserialize(body)
+        return resp, body
 
     def patch_alarm(self, alarm_id, **kwargs):
         uri = "/alarms/%s" % alarm_id
-        return self.patch(uri, kwargs)
+        body = self.serialize(kwargs)
+        resp, body = self.patch(uri, body)
+        body = self.deserialize(body)
+        return resp, body
 
     def delete_alarm(self, alarm_id):
         uri = "/alarms/%s" % alarm_id
@@ -322,7 +339,8 @@ class MonitoringClientJSON(rest_client.RestClient):
     def get_version(self, query=None):
         """List monasca api version."""
         uri = '/'
-        # resp, body = self.get(url)
+        # resp, body = self.get(uri)
+        # return resp, body
         return self.helper_list(uri, query)
 
     def metric_measurement(self, **kwargs):

@@ -25,9 +25,9 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
     @classmethod
     def setUpClass(cls):
         super(MonitoringAlarmingAPITestJSON, cls).setUpClass()
-        cls.rule = {'expression':'mem_total_mb > 0'}
-        for i in range(2):
-            cls.create_alarm_definition(expression="avg(cpu_utilization{service=compute}) >= 1000")
+        # cls.rule = {'expression':'mem_total_mb > 0'}
+        for i in range(1):
+            cls.create_alarm_definition(expression="avg(cpu.idle_perc{service=monitoring}) >= 10")
 
     @test.attr(type="gate")
     def test_alarm_definition_list(self):
@@ -752,3 +752,7 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
         # Delete notification
         resp, body = self.monitoring_client.delete_notification(notification_id)
         self.assertEqual(204, resp.status)
+
+    @classmethod
+    def resource_cleanup(cls):
+        super(MonitoringAlarmingAPITestJSON, cls).resource_cleanup()

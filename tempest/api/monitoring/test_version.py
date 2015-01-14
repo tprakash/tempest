@@ -28,4 +28,5 @@ class MonitoringVersionAPITestJSON(base.BaseMonitoringTest):
     def test_monascaapi_version(self):
         # Get version
         resp, body = self.monitoring_client.get_version()
+        print resp, body
         self.assertEqual(200, resp.status)
