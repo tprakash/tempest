@@ -99,7 +99,9 @@ class MonitoringClientJSON(rest_client.RestClient):
 
     def get_alarm_definition(self, alarm_def_id):
         uri = '/alarm-definitions/%s' % alarm_def_id
-        return self.get(uri)
+        resp, body = self.get(uri)
+        body = self.deserialize(body)
+        return resp, body
 
     def update_alarm_definition(self, alarm_def_id, **kwargs):
         uri = "/alarm-definitions/%s" % alarm_def_id
@@ -113,11 +115,14 @@ class MonitoringClientJSON(rest_client.RestClient):
         body = self.serialize(kwargs)
         resp, body = self.patch(uri, body)
         body = self.deserialize(body)
-        return body
+        return resp, body
 
     def delete_alarm_definition(self, alarm_def_id):
         uri = "/alarm-definitions/%s" % alarm_def_id
-        return self.delete(uri)
+        resp, body = self.delete(uri)
+        if body:
+            body = self.deserialize(body)
+        return resp, body
 
     def list_alarms(self, query=None):
         uri = '/alarms'
@@ -125,7 +130,10 @@ class MonitoringClientJSON(rest_client.RestClient):
 
     def get_alarm(self, alarm_id):
         uri = '/alarms/%s' % alarm_id
-        return self.get(uri)
+        resp, body = self.get(uri)
+        if body:
+            body = self.deserialize(body)
+        return resp, body
 
     def update_alarm(self, alarm_id, **kwargs):
         uri = "/alarms/%s" % alarm_id
@@ -143,27 +151,40 @@ class MonitoringClientJSON(rest_client.RestClient):
 
     def delete_alarm(self, alarm_id):
         uri = "/alarms/%s" % alarm_id
-        return self.delete(uri)
+        resp, body = self.delete(uri)
+        if body:
+            body = self.deserialize(body)
+        return resp, body
 
     def get_alarms_by_def_id(self, alarm_def_id):
         uri = '/alarms?alarm_definition_id=' + alarm_def_id
-        return self.get(uri)
+        resp, body = self.get(uri)
+        body = self.deserialize(body)
+        return resp, body
 
     def get_alarms_by_metric_name(self, metric_name):
         uri = '/alarms?metric_name=' + metric_name
-        return self.get(uri)
+        resp, body = self.get(uri)
+        body = self.deserialize(body)
+        return resp, body
 
     def get_alarms_by_metric_dimensions(self, metric_name, metric_dimensions):
         uri = '/alarms?metric_name=' + metric_name + '&metric_dimensions=' + metric_dimensions
-        return self.get(uri)
+        resp, body = self.get(uri)
+        body = self.deserialize(body)
+        return resp, body
 
     def get_alarms_by_state(self, alarm_def_id, state):
         uri = '/alarms?alarm_definition_id=' + alarm_def_id + '&state=' + state
-        return self.get(uri)
+        resp, body = self.get(uri)
+        body = self.deserialize(body)
+        return resp, body
 
     def get_alarms_state_history_by_dimensions(self, metric_dimensions):
         uri = '/alarms/state-history?dimensions=' + metric_dimensions
-        return self.get(uri)
+        resp, body = self.get(uri)
+        body = self.deserialize(body)
+        return resp, body
 
     def get_alarms_state_history_by_dimensions_and_time(self, **kwargs):
         uri = '/alarms/state-history'
@@ -177,29 +198,33 @@ class MonitoringClientJSON(rest_client.RestClient):
         uri += '&start_time=' + m_start_time
         if m_end_time is not None:
             uri += '&end_time=' + m_end_time
-        return self.get(uri)
+        resp, body = self.get(uri)
+        body = self.deserialize(body)
+        return resp, body
 
     def get_alarm_state_history_by_alarm_id(self, alarm_id):
         uri = "/alarms/%s/state-history" % alarm_id
-        return self.get(uri)
+        resp, body = self.get(uri)
+        body = self.deserialize(body)
+        return resp, body
 
     def list_notifications(self, query=None):
         uri = '/notification-methods'
         return self.helper_list(uri, query)
 
-    def create_notification(self, notification_name, **kwargs):
+    def create_notification(self, **kwargs):
         """Create a notification."""
         uri = '/notification-methods'
-        notification_type = kwargs.get('type', None)
-        address = kwargs.get('address', None)
-        post_body = {
-            'name': notification_name,
-            'type': notification_type,
-            'address': address
-        }
-        post_body = json.dumps(post_body)
-        resp, body = self.post(uri, post_body)
-        # resp, body = self.post(url, post_body)
+        body = self.serialize(kwargs)
+        # notification_type = kwargs.get('type', None)
+        # address = kwargs.get('address', None)
+        # post_body = {
+        #     'name': notification_name,
+        #     'type': notification_type,
+        #     'address': address
+        # }
+        # post_body = json.dumps(post_body)
+        resp, body = self.post(uri, body)
         body = self.deserialize(body)
         return resp, body
 
@@ -207,55 +232,63 @@ class MonitoringClientJSON(rest_client.RestClient):
         """Delete a notification."""
         uri = '/notification-methods/' + notification_id
         resp, body = self.delete(uri)
-        # resp, body = self.delete(uri)
+        if body:
+            body = self.deserialize(body)
         return resp, body
 
     def get_notification(self, notification_id):
         """Get specific notification"""
         uri = '/notification-methods/' + notification_id
         resp, body = self.get(uri)
+        body = self.deserialize(body)
         return resp, body
 
-    def update_notification_name(self, notification_id, notification_name, **kwargs):
+    def update_notification_name(self, notification_id, **kwargs):
         """Update a notification."""
         url = '/notification-methods/' + notification_id
-        notification_type = kwargs.get('type', None)
-        address = kwargs.get('address', None)
-        post_body = {
-            'name': notification_name,
-            'type': notification_type,
-            'address': address
-        }
-        post_body = json.dumps(post_body)
-        resp, body = self.put(url, post_body)
+        body = self.serialize(kwargs)
+        # notification_type = kwargs.get('type', None)
+        # address = kwargs.get('address', None)
+        # post_body = {
+        #     'name': notification_name,
+        #     'type': notification_type,
+        #     'address': address
+        # }
+        # post_body = json.dumps(post_body)
+        resp, body = self.put(url, body)
+        body = self.deserialize(body)
         return resp, body
 
-    def update_notification_type(self, notification_id, notification_type, **kwargs):
+    def update_notification_type(self, notification_id, **kwargs):
         """Update a notification."""
         url = '/notification-methods/' + notification_id
-        notification_name = kwargs.get('name', None)
-        address = kwargs.get('address', None)
-        post_body = {
-            'name': notification_name,
-            'type': notification_type,
-            'address': address
-        }
-        post_body = json.dumps(post_body)
-        resp, body = self.put(url, post_body)
+        body = self.serialize(kwargs)
+        # notification_name = kwargs.get('name', None)
+        # address = kwargs.get('address', None)
+        # post_body = {
+        #     'name': notification_name,
+        #     'type': notification_type,
+        #     'address': address
+        # }
+        # post_body = json.dumps(post_body)
+        resp, body = self.put(url, body)
+        body = self.deserialize(body)
         return resp, body
 
-    def update_notification_address(self, notification_id, address, **kwargs):
+    def update_notification_address(self, notification_id, **kwargs):
         """Update a notification."""
         url = '/notification-methods/' + notification_id
-        notification_name = kwargs.get('name', None)
-        notification_type = kwargs.get('type', None)
-        post_body = {
-            'name': notification_name,
-            'type': notification_type,
-            'address': address
-        }
-        post_body = json.dumps(post_body)
-        resp, body = self.put(url, post_body)
+        body = self.serialize(kwargs)
+        # notification_name = kwargs.get('name', None)
+        # notification_type = kwargs.get('type', None)
+        # post_body = {
+        #     'name': notification_name,
+        #     'type': notification_type,
+        #     'address': address
+        # }
+        # post_body = json.dumps(post_body)
+        resp, body = self.put(url, body)
+        body = self.deserialize(body)
         return resp, body
 
     def list_metric_no_option(self):
@@ -339,8 +372,6 @@ class MonitoringClientJSON(rest_client.RestClient):
     def get_version(self, query=None):
         """List monasca api version."""
         uri = '/'
-        # resp, body = self.get(uri)
-        # return resp, body
         return self.helper_list(uri, query)
 
     def metric_measurement(self, **kwargs):

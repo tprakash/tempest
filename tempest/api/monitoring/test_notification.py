@@ -28,9 +28,9 @@ class MonitoringNotificationTestJSON(base.BaseMonitoringTest):
         # Test case to check if new notification is created successfully.
         notification_name = data_utils.rand_name('notification-')
         notification_type = 'EMAIL'
-        u_address = 'jenny.wei@hp.com'
+        u_address = 'hpclmon@gmail.com'
         
-        resp, body = self.monitoring_client.create_notification(notification_name, type=notification_type, address=u_address)
+        resp, body = self.monitoring_client.create_notification(name = notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name, body['name'])
         notification_id = body['id']
@@ -44,16 +44,16 @@ class MonitoringNotificationTestJSON(base.BaseMonitoringTest):
         # Create notification first
         notification_name = data_utils.rand_name('notification-')
         notification_type = 'EMAIL'
-        u_address = 'jenny.wei@hp.com'
+        u_address = 'hpclmon@gmail.com'
 
-        resp, body = self.monitoring_client.create_notification(notification_name, type=notification_type, address=u_address)
+        resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name, body['name'])
         notification_id = body['id']
         # Get notification
         resp, body = self.monitoring_client.get_notification(notification_id)
         self.assertEqual(200, resp.status)
-        self.assertIn(notification_name, body)
+        self.assertIn(notification_name, body['name'])
         # Delete notification
         resp, body = self.monitoring_client.delete_notification(notification_id)
         self.assertEqual(204, resp.status)
@@ -64,18 +64,18 @@ class MonitoringNotificationTestJSON(base.BaseMonitoringTest):
         # Create notification first
         notification_name = data_utils.rand_name('notification-')
         notification_type = 'EMAIL'
-        u_address = 'jenny.wei@hp.com'
+        u_address = 'hpclmon@gmail.com'
 
-        resp, body = self.monitoring_client.create_notification(notification_name, type=notification_type, address=u_address)
+        resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name, body['name'])
         notification_id = body['id']
         # Update notification
         new_name = notification_name + 'update'
         resp, body = self.monitoring_client.update_notification_name(
-                          notification_id, new_name, type=notification_type, address=u_address)
+                          notification_id, name=new_name, type=notification_type, address=u_address)
         self.assertEqual(200, resp.status)
-        self.assertIn(new_name, body)
+        self.assertIn(new_name, body['name'])
         # Delete notification
         resp, body = self.monitoring_client.delete_notification(notification_id)
         self.assertEqual(204, resp.status)
@@ -86,18 +86,18 @@ class MonitoringNotificationTestJSON(base.BaseMonitoringTest):
         # Create notification first
         notification_name = data_utils.rand_name('notification-')
         notification_type = 'EMAIL'
-        u_address = 'jenny.wei@hp.com'
+        u_address = 'hpclmon@gmail.com'
 
-        resp, body = self.monitoring_client.create_notification(notification_name, type=notification_type, address=u_address)
+        resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name, body['name'])
         notification_id = body['id']
         # Update notification
         new_type = 'SMS'
         resp, body = self.monitoring_client.update_notification_type(
-                          notification_id, new_type, name=notification_name, address=u_address)
+                          notification_id, type=new_type, name=notification_name, address=u_address)
         self.assertEqual(200, resp.status)
-        self.assertIn(new_type, body)
+        self.assertIn(new_type, body['type'])
         # Delete notification
         resp, body = self.monitoring_client.delete_notification(notification_id)
         self.assertEqual(204, resp.status)
@@ -108,18 +108,18 @@ class MonitoringNotificationTestJSON(base.BaseMonitoringTest):
         # Create notification first
         notification_name = data_utils.rand_name('notification-')
         notification_type = 'EMAIL'
-        u_address = 'jenny.wei@hp.com'
+        u_address = 'hpclmon@gmail.com'
 
-        resp, body = self.monitoring_client.create_notification(notification_name, type=notification_type, address=u_address)
+        resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name, body['name'])
         notification_id = body['id']
         # Update notification
         new_address = 'test@test.com'
         resp, body = self.monitoring_client.update_notification_address(
-                          notification_id, new_address, name=notification_name, type=notification_type)
+                          notification_id, address=new_address, name=notification_name, type=notification_type)
         self.assertEqual(200, resp.status)
-        self.assertIn(new_address, body)
+        self.assertIn(new_address, body['address'])
         # Delete notification
         resp, body = self.monitoring_client.delete_notification(notification_id)
         self.assertEqual(204, resp.status)
