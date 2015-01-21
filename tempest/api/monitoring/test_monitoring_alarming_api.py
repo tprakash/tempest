@@ -85,27 +85,27 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
     def test_update_alarm_definition(self):
         # Create an alarm definition
         alarm_def_name = data_utils.rand_name('monitoring_alarm_definition')
-        resp, body = self.monitoring_client.create_alarm_definition(name=alarm_def_name, expression="mem_total_mb > 0")
+        resp, body = self.monitoring_client.create_alarm_definition(name=alarm_def_name, expression="cpu.idle_perc > 0")
         self.assertEqual(201, resp.status)
         self.assertEqual(alarm_def_name, body['name'])
         alarm_def_id = body['id']
-        self.assertEqual("mem_total_mb > 0", body['expression'])
+        self.assertEqual("cpu.idle_perc > 0", body['expression'])
         #Update alarm
         alarm_def_name = data_utils.rand_name('monitoring_alarm_def_update')
         resp, body = self.monitoring_client.update_alarm_definition(
             alarm_def_id,
             name = alarm_def_name,
-            expression = "cpu_perc < 0",
+            expression = "cpu.idle_perc < 0",
             actions_enabled = 'true',
         )
         self.assertEqual(200, resp.status)
         self.assertEqual(alarm_def_name, body['name'])
-        self.assertEqual("cpu_perc < 0", body['expression'])
+        self.assertEqual("cpu.idle_perc < 0", body['expression'])
         # Get and verify details of an alarm definition after update
         resp, body = self.monitoring_client.get_alarm_definition(alarm_def_id)
         self.assertEqual(200, resp.status)
         self.assertEqual(alarm_def_name, body['name'])
-        self.assertEqual("cpu_perc < 0", body['expression'])
+        self.assertEqual("cpu.idle_perc < 0", body['expression'])
         # Delete alarm defintion and verify if deleted
         resp, _ = self.monitoring_client.delete_alarm_definition(alarm_def_id)
         self.assertEqual(204, resp.status)
@@ -119,7 +119,7 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
         notification_type = 'EMAIL'
         u_address = 'root@localhost'
 
-        resp, body = self.monitoring_client.create_notification(notification_name, type=notification_type, address=u_address)
+        resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name, body['name'])
         notification_id = body['id']
@@ -157,12 +157,12 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
         notification_type2 = 'SMS'
         address2 = '9945039580'
 
-        resp, body = self.monitoring_client.create_notification(notification_name1, type=notification_type1, address=address1)
+        resp, body = self.monitoring_client.create_notification(name=notification_name1, type=notification_type1, address=address1)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name1, body['name'])
         notification_id1 = body['id']
 
-        resp, body = self.monitoring_client.create_notification(notification_name2, type=notification_type2, address=address2)
+        resp, body = self.monitoring_client.create_notification(name=notification_name2, type=notification_type2, address=address2)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name2, body['name'])
         notification_id2 = body['id']
@@ -200,38 +200,37 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
         notification_type = 'EMAIL'
         u_address = 'root@localhost'
 
-        resp, body = self.monitoring_client.create_notification(notification_name, type=notification_type, address=u_address)
+        resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name, body['name'])
         notification_id = body['id']
 
         # Create an alarm
         alarm_def_name = data_utils.rand_name('monitoring_alarm_definition')
-        resp, body = self.monitoring_client.create_alarm_definition(name=alarm_def_name, expression="mem_total_mb > 0")
+        resp, body = self.monitoring_client.create_alarm_definition(name=alarm_def_name, expression="cpu.idle_perc > 0")
         self.assertEqual(201, resp.status)
         self.assertEqual(alarm_def_name, body['name'])
         alarm_def_id = body['id']
-        self.assertEqual("mem_total_mb > 0", body['expression'])
+        self.assertEqual("cpu.idle_perc > 0", body['expression'])
 
         #Update alarm
         alarm_def_name = data_utils.rand_name('monitoring_alarm_update')
         resp, body = self.monitoring_client.update_alarm_definition(
             alarm_def_id,
             name = alarm_def_name,
-            expression = "cpu_perc < 0",
             actions_enabled = 'true',
+            expression = "cpu.idle_perc < 0",
             alarm_actions = notification_id,
             ok_actions = notification_id
         )
         self.assertEqual(200, resp.status)
         self.assertEqual(alarm_def_name, body['name'])
-        self.assertEqual("cpu_perc < 0", body['expression'])
+        self.assertEqual("cpu.idle_perc < 0", body['expression'])
 
         # Get and verify details of an alarm after update
         resp, body = self.monitoring_client.get_alarm_definition(alarm_def_id)
         self.assertEqual(200, resp.status)
         self.assertEqual(alarm_def_name, body['name'])
-        self.assertEqual("cpu_perc < 0", body['expression'])
 
         # Delete alarm and verify if deleted
         resp, _ = self.monitoring_client.delete_alarm_definition(alarm_def_id)
@@ -250,7 +249,7 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
         notification_type = 'EMAIL'
         u_address = 'root@localhost'
 
-        resp, body = self.monitoring_client.create_notification(notification_name, type=notification_type, address=u_address)
+        resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name, body['name'])
         notification_id = body['id']
@@ -284,7 +283,7 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
         notification_type = 'EMAIL'
         u_address = 'root@localhost'
 
-        resp, body = self.monitoring_client.create_notification(notification_name, type=notification_type, address=u_address)
+        resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name, body['name'])
         notification_id = body['id']
@@ -318,7 +317,7 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
         notification_type = 'EMAIL'
         u_address = 'root@localhost'
 
-        resp, body = self.monitoring_client.create_notification(notification_name, type=notification_type, address=u_address)
+        resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name, body['name'])
         notification_id = body['id']
@@ -352,7 +351,7 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
         notification_type = 'EMAIL'
         u_address = 'root@localhost'
 
-        resp, body = self.monitoring_client.create_notification(notification_name, type=notification_type, address=u_address)
+        resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name, body['name'])
         notification_id = body['id']
@@ -392,7 +391,7 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
         notification_type = 'EMAIL'
         u_address = 'root@localhost'
 
-        resp, body = self.monitoring_client.create_notification(notification_name, type=notification_type, address=u_address)
+        resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name, body['name'])
         notification_id = body['id']
@@ -431,7 +430,7 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
         notification_type = 'EMAIL'
         u_address = 'root@localhost'
 
-        resp, body = self.monitoring_client.create_notification(notification_name, type=notification_type, address=u_address)
+        resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name, body['name'])
         notification_id = body['id']
@@ -470,7 +469,7 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
         notification_type = 'EMAIL'
         u_address = 'root@localhost'
 
-        resp, body = self.monitoring_client.create_notification(notification_name, type=notification_type, address=u_address)
+        resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name, body['name'])
         notification_id = body['id']
@@ -509,7 +508,7 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
         notification_type = 'EMAIL'
         u_address = 'root@localhost'
 
-        resp, body = self.monitoring_client.create_notification(notification_name, type=notification_type, address=u_address)
+        resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name, body['name'])
         notification_id = body['id']
@@ -526,7 +525,7 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
         alarm_def_id = body['id']
         self.assertEqual("cpu.idle_perc > 0", body['expression'])
 
-        time.sleep(60)
+        time.sleep(30)
         # List alarm using alarm def id
         resp, body = self.monitoring_client.get_alarms_by_def_id(alarm_def_id)
         self.assertEqual(200, resp.status)
@@ -534,8 +533,8 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
 
         # List specific alarm
         resp, body = self.monitoring_client.get_alarm(alarm_id)
-        self.assertRaises(exceptions.NotFound,
-                          self.monitoring_client.get_alarm, alarm_id)
+        # self.assertRaises(exceptions.NotFound,
+        #                   self.monitoring_client.get_alarm, alarm_id)
         self.assertEqual(200, resp.status)
 
         # Delete alarm and verify if deleted
@@ -561,7 +560,7 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
         notification_type = 'EMAIL'
         u_address = 'root@localhost'
 
-        resp, body = self.monitoring_client.create_notification(notification_name, type=notification_type, address=u_address)
+        resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name, body['name'])
         notification_id = body['id']
@@ -606,7 +605,7 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
         notification_type = 'EMAIL'
         u_address = 'root@localhost'
 
-        resp, body = self.monitoring_client.create_notification(notification_name, type=notification_type, address=u_address)
+        resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name, body['name'])
         notification_id = body['id']
@@ -657,7 +656,7 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
         notification_type = 'EMAIL'
         u_address = 'root@localhost'
 
-        resp, body = self.monitoring_client.create_notification(notification_name, type=notification_type, address=u_address)
+        resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name, body['name'])
         notification_id = body['id']
@@ -709,7 +708,7 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
         notification_type = 'EMAIL'
         u_address = 'root@localhost'
 
-        resp, body = self.monitoring_client.create_notification(notification_name, type=notification_type, address=u_address)
+        resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name, body['name'])
         notification_id = body['id']
