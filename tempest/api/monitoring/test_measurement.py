@@ -33,7 +33,7 @@ class MonitoringMeasurementAPITestJSON(base.BaseMonitoringTest):
     @test.attr(type="gate")
     def test_measurement_metricname(self):
         # Get version 
-        metric_name = 'cpu_user_perc'
+        metric_name = 'cpu.user_perc'
         resp, body = self.monitoring_client.metric_measurement(name=metric_name)
         self.assertEqual(200, resp.status)
 
@@ -50,7 +50,7 @@ class MonitoringMeasurementAPITestJSON(base.BaseMonitoringTest):
     def test_measurement_dimension(self):
         # List metric measurement with metric name and dimension
         # Create metric with dimension
-        m_name = data_utils.rand_name('metric')
+        m_name = "Test_Metric_1"
         m_value = 1.0
         m_dimension = {
                       'key1': 'value1',

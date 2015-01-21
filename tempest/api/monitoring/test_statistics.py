@@ -27,7 +27,7 @@ class MonitoringMetricTestJSON(base.BaseMonitoringTest):
     @test.attr(type="gate")
     def test_metric_statistics_required_option(self):
         # Create a single metric with only required parameters
-        m_name = data_utils.rand_name('metric')
+        m_name = "Test_Metric_1"
         m_value = 1.0 
         resp, body = self.monitoring_client.create_metric(name=m_name, value=m_value)
         self.assertEqual(204, resp.status)
@@ -39,7 +39,7 @@ class MonitoringMetricTestJSON(base.BaseMonitoringTest):
     @test.attr(type="gate")
     def test_create_metric_options(self):
         # Create a single metric with optional 
-        m_name = data_utils.rand_name('metric')
+        m_name = "Test_Metric_1"
         m_value = 1.0
         m_dimension = {
                       'key1': 'value1',

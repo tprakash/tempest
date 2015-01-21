@@ -33,15 +33,15 @@ class MonitoringMetricTestJSON(base.BaseMonitoringTest):
     @test.attr(type="gate")
     def test_metric_list_by_name(self):
         # List metric by metric name
-        m_name = 'thread_count'
+        m_name = 'cpu.idle_perc'
         resp, body = self.monitoring_client.list_metric_by_name(m_name)
         self.assertEqual(200, resp.status)
 
     @test.attr(type="gate")
     def test_create_metric_required_option(self):
         # Create a single metric with only required parameters
-        m_name = data_utils.rand_name('metric')
-        m_value = 1.0 
+        m_name = "Test_Metric_1"
+        m_value = 1.0
         resp, body = self.monitoring_client.create_metric(name=m_name, value=m_value)
         self.assertEqual(204, resp.status)
         # Get metric
@@ -51,7 +51,8 @@ class MonitoringMetricTestJSON(base.BaseMonitoringTest):
     @test.attr(type="gate")
     def test_create_metric_options(self):
         # Create a single metric with optional 
-        m_name = data_utils.rand_name('metric')
+        # m_name = data_utils.rand_name('metric')
+        m_name = "Test_Metric_1"
         m_value = 1.0
         m_dimension = {
                       'key1': 'value1',
@@ -68,9 +69,10 @@ class MonitoringMetricTestJSON(base.BaseMonitoringTest):
     @test.attr(type="gate")
     def test_create_multiple_metric(self):
         # Create multiple metrics 
-        m_name1 = data_utils.rand_name('metric')
+        # m_name1 = data_utils.rand_name('metric')
+        m_name1 = "Test_Metric_1"
         m_value1 = 1.0
-        m_name2 = data_utils.rand_name('metric')
+        m_name2 = "Test_Metric_2"
         m_value2 = 1.0
         m_dimension2 = {
                       'key1': 'value1',
