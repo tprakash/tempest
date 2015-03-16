@@ -160,7 +160,7 @@ class MonitoringClientJSON(rest_client.RestClient):
         uri = '/alarms?alarm_definition_id=' + alarm_def_id
         resp, body = self.get(uri)
         body = self.deserialize(body)
-        return resp, body
+        return resp, body['elements']
 
     def get_alarms_by_metric_name(self, metric_name):
         uri = '/alarms?metric_name=' + metric_name
@@ -184,7 +184,7 @@ class MonitoringClientJSON(rest_client.RestClient):
         uri = '/alarms/state-history?dimensions=' + metric_dimensions
         resp, body = self.get(uri)
         body = self.deserialize(body)
-        return resp, body
+        return resp, body['elements']
 
     def get_alarms_state_history_by_dimensions_and_time(self, **kwargs):
         uri = '/alarms/state-history'
@@ -206,7 +206,7 @@ class MonitoringClientJSON(rest_client.RestClient):
         uri = "/alarms/%s/state-history" % alarm_id
         resp, body = self.get(uri)
         body = self.deserialize(body)
-        return resp, body
+        return resp, body['elements']
 
     def list_notifications(self, query=None):
         uri = '/notification-methods'
