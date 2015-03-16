@@ -37,7 +37,7 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
         self.assertEqual(200, resp.status)
 
         # Verify created alarm in the list
-        fetched_ids = [a['id'] for a in alarm_def_list]
+        fetched_ids = [a['id'] for a in alarm_def_list['elements']]
         missing_alarms = [a for a in self.alarm_def_ids if a not in fetched_ids]
         self.assertEqual(0, len(missing_alarms),
                          "Failed to find the following created alarm(s)"
@@ -117,6 +117,7 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
         # Test case to create alarm definition with notification method
         notification_name = data_utils.rand_name('notification-')
         notification_type = 'EMAIL'
+        # Replace below email with valid email address as required.
         u_address = 'root@localhost'
 
         resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
@@ -151,11 +152,13 @@ class MonitoringAlarmingAPITestJSON(base.BaseMonitoringTest):
         # Test case to create alarm definition with notification method
         notification_name1 = data_utils.rand_name('notification-')
         notification_type1 = 'EMAIL'
+        # Replace below email with valid email address as required.
         address1 = 'root@localhost'
 
         notification_name2 = data_utils.rand_name('notification-')
-        notification_type2 = 'SMS'
-        address2 = '9945039580'
+        notification_type2 = 'PAGERDUTY'
+        #Replace below with valid Pagerduty API key
+        address2 = '34kdfklskdjerer3434'
 
         resp, body = self.monitoring_client.create_notification(name=notification_name1, type=notification_type1, address=address1)
         self.assertEqual(201, resp.status)

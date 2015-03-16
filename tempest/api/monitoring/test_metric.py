@@ -58,7 +58,7 @@ class MonitoringMetricTestJSON(base.BaseMonitoringTest):
                       'key1': 'value1',
                       'key2': 'value2'
                       }
-        m_timestamp = int(time.time() - 100)
+        m_timestamp = int(time.time() - 100)*1000
         resp, body = self.monitoring_client.create_metric(
                      name=m_name, m_value=m_value, dimensions=m_dimension,timestamp=m_timestamp)
         self.assertEqual(204, resp.status)
@@ -78,7 +78,7 @@ class MonitoringMetricTestJSON(base.BaseMonitoringTest):
                       'key1': 'value1',
                       'key2': 'value2'
                       }
-        m_timestamp2 = int(time.time() - 100)
+        m_timestamp2 = int(time.time() - 100)*1000
         resp, body = self.monitoring_client.create_multiple_metric(name1=m_name1, m_value1=m_value1,
                      name2=m_name2, m_value2=m_value2,dimensions2=m_dimension2,timestamp2=m_timestamp2)
         self.assertEqual(204, resp.status)

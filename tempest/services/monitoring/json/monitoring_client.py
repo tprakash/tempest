@@ -328,7 +328,7 @@ class MonitoringClientJSON(rest_client.RestClient):
         m_name = kwargs.get('name', None)
         m_value = kwargs.get('value', None)
         m_dimension = kwargs.get('dimensions', None)
-        m_timestamp = kwargs.get('timestamp', int(time.time()))
+        m_timestamp = kwargs.get('timestamp', int(time.time()*1000))
         post_body = {
             'name': m_name,
             'value': m_value,
@@ -345,7 +345,7 @@ class MonitoringClientJSON(rest_client.RestClient):
         m_name1 = kwargs.get('name1', None)
         m_value1 = kwargs.get('value1', None)
         m_dimension1 = kwargs.get('dimensions1', None)
-        m_timestamp1 = kwargs.get('timestamp1', int(time.time()))
+        m_timestamp1 = kwargs.get('timestamp1', int(time.time()*1000))
         post_body1 = {
             'name': m_name1,
             'value': m_value1,
@@ -356,7 +356,7 @@ class MonitoringClientJSON(rest_client.RestClient):
         m_name2 = kwargs.get('name2', None)
         m_value2 = kwargs.get('value2', None)
         m_dimension2 = kwargs.get('dimensions2', None)
-        m_timestamp2 = kwargs.get('timestamp2', int(time.time()))
+        m_timestamp2 = kwargs.get('timestamp2', int(time.time()*1000))
         post_body2 = {
             'name': m_name2,
             'value': m_value2,
@@ -413,7 +413,7 @@ class MonitoringClientJSON(rest_client.RestClient):
         m_end_time = kwargs.get('end_time', None)
         m_statistics = kwargs.get('statistics', None)
         m_period = kwargs.get('period', 300)
-        url += '?nsme=' + m_name + '&statistics=' + m_statistics + '&start_time=' + m_start_time
+        url += '?name=' + m_name + '&statistics=' + m_statistics + '&start_time=' + m_start_time
         if m_dimension is not None:
             keylist = m_dimension.keys()
             dimension = ''

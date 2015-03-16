@@ -28,7 +28,8 @@ class MonitoringNotificationTestJSON(base.BaseMonitoringTest):
         # Test case to check if new notification is created successfully.
         notification_name = data_utils.rand_name('notification-')
         notification_type = 'EMAIL'
-        u_address = 'hpclmon@gmail.com'
+        # Replace below email with valid email address as required.
+        u_address = 'root@localhost'
         
         resp, body = self.monitoring_client.create_notification(name = notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
@@ -44,7 +45,8 @@ class MonitoringNotificationTestJSON(base.BaseMonitoringTest):
         # Create notification first
         notification_name = data_utils.rand_name('notification-')
         notification_type = 'EMAIL'
-        u_address = 'hpclmon@gmail.com'
+        # Replace below email with valid email address as required.
+        u_address = 'root@localhost'
 
         resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
@@ -64,7 +66,8 @@ class MonitoringNotificationTestJSON(base.BaseMonitoringTest):
         # Create notification first
         notification_name = data_utils.rand_name('notification-')
         notification_type = 'EMAIL'
-        u_address = 'hpclmon@gmail.com'
+        # Replace below email with valid email address as required.
+        u_address = 'root@localhost'
 
         resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
@@ -86,14 +89,15 @@ class MonitoringNotificationTestJSON(base.BaseMonitoringTest):
         # Create notification first
         notification_name = data_utils.rand_name('notification-')
         notification_type = 'EMAIL'
-        u_address = 'hpclmon@gmail.com'
+        # Replace below email with valid email address as required.
+        u_address = 'root@localhost'
 
         resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
         self.assertEqual(notification_name, body['name'])
         notification_id = body['id']
         # Update notification
-        new_type = 'SMS'
+        new_type = 'PAGERDUTY'
         resp, body = self.monitoring_client.update_notification_type(
                           notification_id, type=new_type, name=notification_name, address=u_address)
         self.assertEqual(200, resp.status)
@@ -108,7 +112,8 @@ class MonitoringNotificationTestJSON(base.BaseMonitoringTest):
         # Create notification first
         notification_name = data_utils.rand_name('notification-')
         notification_type = 'EMAIL'
-        u_address = 'hpclmon@gmail.com'
+        # Replace below email with valid email address as required.
+        u_address = 'root@localhost'
 
         resp, body = self.monitoring_client.create_notification(name=notification_name, type=notification_type, address=u_address)
         self.assertEqual(201, resp.status)
